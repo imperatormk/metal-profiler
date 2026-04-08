@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+*.metallib
+*.bin
+*.o
+.DS_Store
