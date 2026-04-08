@@ -185,36 +185,15 @@ def _find_section(macho_data: bytes, sect_name: bytes, seg_name: bytes) -> tuple
     return 0, 0
 
 
-def disassemble(gpu_binary: bytes, applegpu_path: str = None) -> str:
-    """Disassemble native GPU binary using applegpu."""
-    if applegpu_path is None:
-        # Try: bundled submodule → sibling clone
-        candidates = [
-            os.path.join(os.path.dirname(__file__), "..", "third_party", "applegpu", "disassemble.py"),
-            os.path.join(os.path.dirname(__file__), "..", "..", "applegpu", "disassemble.py"),
-        ]
-        for c in candidates:
-            if os.path.exists(c):
-                applegpu_path = os.path.abspath(c)
-                break
+def disassemble(gpu_binary: bytes) -> str:
+    """Disassemble native GPU binary using vendored applegpu."""
+    import io
+    from contextlib import redirect_stdout
 
-    if not applegpu_path or not os.path.exists(applegpu_path):
-        raise FileNotFoundError(
-            "applegpu disassembler not found. Run: git submodule update --init"
-        )
+    from ._disassemble import disassemble as _disasm
 
-    # Write binary to temp file
-    tmp = tempfile.NamedTemporaryFile(suffix='.bin', delete=False)
-    tmp.write(gpu_binary)
-    tmp.close()
+    buf = io.StringIO()
+    with redirect_stdout(buf):
+        _disasm(gpu_binary)
 
-    result = subprocess.run(
-        ["python3", applegpu_path, tmp.name],
-        capture_output=True, text=True
-    )
-    os.unlink(tmp.name)
-
-    if result.returncode != 0:
-        raise RuntimeError(f"Disassembly failed:\n{result.stderr}")
-
-    return result.stdout
+    return buf.getvalue()

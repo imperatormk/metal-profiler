@@ -2,6 +2,10 @@ LICENSE
 README.md
 pyproject.toml
 metal_profiler/__init__.py
+metal_profiler/_applegpu.py
+metal_profiler/_disassemble.py
+metal_profiler/_fma.py
+metal_profiler/_srgb.py
 metal_profiler/cost_model.py
 metal_profiler/extract.py
 metal_profiler/metal_profile.py
