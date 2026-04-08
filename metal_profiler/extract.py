@@ -188,11 +188,10 @@ def _find_section(macho_data: bytes, sect_name: bytes, seg_name: bytes) -> tuple
 def disassemble(gpu_binary: bytes, applegpu_path: str = None) -> str:
     """Disassemble native GPU binary using applegpu."""
     if applegpu_path is None:
-        # Try: bundled submodule → sibling clone → home dir
+        # Try: bundled submodule → sibling clone
         candidates = [
             os.path.join(os.path.dirname(__file__), "..", "third_party", "applegpu", "disassemble.py"),
             os.path.join(os.path.dirname(__file__), "..", "..", "applegpu", "disassemble.py"),
-            os.path.expanduser("~/projects/oss/applegpu/disassemble.py"),
         ]
         for c in candidates:
             if os.path.exists(c):
