@@ -1,0 +1,2 @@
+[console_scripts]
+metal-profile = metal_profiler.metal_profile:main

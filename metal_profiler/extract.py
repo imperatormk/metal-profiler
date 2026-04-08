@@ -188,19 +188,20 @@ def _find_section(macho_data: bytes, sect_name: bytes, seg_name: bytes) -> tuple
 def disassemble(gpu_binary: bytes, applegpu_path: str = None) -> str:
     """Disassemble native GPU binary using applegpu."""
     if applegpu_path is None:
-        # Try common locations
+        # Try: bundled submodule → sibling clone → home dir
         candidates = [
-            os.path.expanduser("~/projects/oss/applegpu/disassemble.py"),
+            os.path.join(os.path.dirname(__file__), "..", "third_party", "applegpu", "disassemble.py"),
             os.path.join(os.path.dirname(__file__), "..", "..", "applegpu", "disassemble.py"),
+            os.path.expanduser("~/projects/oss/applegpu/disassemble.py"),
         ]
         for c in candidates:
             if os.path.exists(c):
-                applegpu_path = c
+                applegpu_path = os.path.abspath(c)
                 break
 
     if not applegpu_path or not os.path.exists(applegpu_path):
         raise FileNotFoundError(
-            "applegpu disassembler not found. Clone https://github.com/dougallj/applegpu"
+            "applegpu disassembler not found. Run: git submodule update --init"
         )
 
     # Write binary to temp file

@@ -1,0 +1,13 @@
+LICENSE
+README.md
+pyproject.toml
+metal_profiler/__init__.py
+metal_profiler/cost_model.py
+metal_profiler/extract.py
+metal_profiler/metal_profile.py
+metal_profiler/profiler.py
+metal_profiler.egg-info/PKG-INFO
+metal_profiler.egg-info/SOURCES.txt
+metal_profiler.egg-info/dependency_links.txt
+metal_profiler.egg-info/entry_points.txt
+metal_profiler.egg-info/top_level.txt
