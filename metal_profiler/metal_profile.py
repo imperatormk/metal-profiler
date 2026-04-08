@@ -21,11 +21,8 @@ import sys
 import os
 import tempfile
 
-# Add src to path
-sys.path.insert(0, os.path.dirname(__file__))
-
-from extract import compile_metal, compile_metallib_file, create_binary_archive, extract_gpu_binary, disassemble
-from profiler import parse_disassembly, analyze, format_report
+from .extract import compile_metal, compile_metallib_file, create_binary_archive, extract_gpu_binary, disassemble
+from .profiler import parse_disassembly, analyze, format_report
 
 
 def profile_metal_source(source: str, function_name: str,

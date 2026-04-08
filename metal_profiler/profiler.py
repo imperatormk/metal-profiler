@@ -15,7 +15,7 @@ import os
 from dataclasses import dataclass, field
 from collections import defaultdict
 
-from cost_model import (
+from .cost_model import (
     Unit, InstructionCost, COST_TABLE, lookup_cost,
     occupancy_for_regs, OCCUPANCY_TABLE, DEP_PENALTY,
 )

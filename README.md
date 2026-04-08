@@ -3,7 +3,7 @@
 Static analysis profiler for Metal compute shaders. Compiles your kernel, extracts the native AGX GPU binary, disassembles it, and tells you exactly where the bottleneck is.
 
 ```
-$ python src/metal_profile.py kernel.metal -f matmul_naive
+$ python -m metal_profiler.metal_profile kernel.metal -f matmul_naive
 
 ╔══════════════════════════════════════════════════════════════╗
 ║  metal-profiler: matmul_naive                               ║
@@ -48,6 +48,28 @@ No guessing. No Xcode required. Real GPU instructions, real cycle counts.
 | Loop body cost per iteration | Combined ALU + memory + dependency analysis |
 | Optimization suggestions | Pattern matching on identified bottlenecks |
 
+## Python API
+
+```python
+from metal_profiler import profile_metal_file, profile_metal_source
+
+# Profile a .metal file
+report, disasm = profile_metal_file("kernel.metal", "my_kernel")
+print(report)
+
+# Profile from source string
+report, disasm = profile_metal_source(source_code, "my_kernel")
+print(report)
+
+# Lower-level access
+from metal_profiler import parse_disassembly, analyze, format_report, occupancy_for_regs
+
+instructions = parse_disassembly(disasm)
+result = analyze(instructions)
+print(f"Occupancy: {result.occupancy_pct}%")
+print(f"Bottleneck: {result.bottleneck}")
+```
+
 ## Requirements
 
 - macOS with Metal (Apple Silicon)
@@ -62,16 +84,16 @@ No guessing. No Xcode required. Real GPU instructions, real cycle counts.
 
 ```bash
 # Profile a kernel
-python src/metal_profile.py kernel.metal -f my_kernel
+python -m metal_profiler.metal_profile kernel.metal -f my_kernel
 
 # Just disassemble (no analysis)
-python src/metal_profile.py kernel.metal -f my_kernel --disasm-only
+python -m metal_profiler.metal_profile kernel.metal -f my_kernel --disasm-only
 
 # Show raw disassembly alongside profile
-python src/metal_profile.py kernel.metal -f my_kernel --show-disasm
+python -m metal_profiler.metal_profile kernel.metal -f my_kernel --show-disasm
 
 # Profile a pre-extracted GPU binary
-python src/metal_profile.py --binary gpu_code.bin -f my_kernel
+python -m metal_profiler.metal_profile --binary gpu_code.bin -f my_kernel
 ```
 
 ## Example output (annotated disassembly)
