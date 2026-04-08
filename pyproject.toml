@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "metal-profiler"
+version = "0.1.0"
+description = "Static analysis profiler for Metal compute shaders on Apple Silicon"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.9"
+authors = [{ name = "imperatormk" }]
+keywords = ["metal", "gpu", "profiler", "apple", "shader", "agx"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Operating System :: MacOS",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development :: Compilers",
+]
+
+[project.urls]
+Repository = "https://github.com/imperatormk/metal-profiler"
+
+[project.scripts]
+metal-profile = "metal_profiler.metal_profile:main"
+
+[tool.setuptools.packages.find]
+include = ["metal_profiler*"]
